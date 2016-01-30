@@ -1,0 +1,196 @@
+﻿<Page x:Class="S2B.Views.ListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:S2B.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:S2B.ViewModels" mc:Ignorable="d"
+      Loaded="CarregarPagina">
+    <Page.DataContext>
+        <vm:ListPageViewModel />
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <!--  #region default visual states  -->
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO  -->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--  #endregion  -->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!--  header  -->
+
+        <controls:PageHeader Content="Lista" Frame="{x:Bind Frame}">
+            <Interactivity:Interaction.Behaviors>
+                <Behaviors:EllipsisBehavior Visibility="Auto" />
+            </Interactivity:Interaction.Behaviors>
+        </controls:PageHeader>
+
+        <!--  page content  -->
+
+        <Pivot Grid.Row="1"
+               x:Name="VoltarPivotInicial">
+            <Pivot.Items>
+                <PivotItem Header="Lista"
+                           x:Name="PivotInicial">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock TextWrapping="Wrap"
+                                   Text="Nessa aba voce pode ver todas listas adicionadas por voce e suas categorias."/>
+                            <ListView x:Name="ArmazenamentosList"  
+                                      SelectionMode="None"
+                                      IsItemClickEnabled="True"
+                                      ItemClick="GoMaterialList">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListViewItem Width="500" 
+                                                  Height="100"
+                                                  Margin="5"
+                                                  Background="Blue"
+                                                  IsHitTestVisible="False">
+                                            <TextBlock>
+                                            <Run Text="Nome:"/>
+                                            <Run Text="{Binding Nome}"/>
+                                            <LineBreak/>
+                                            <Run Text="Categoria:"/>
+                                            <Run Text="{Binding Categorias}"/>
+                                            <LineBreak/>
+                                            <Run Text="Data de criação:"/>
+                                            <Run Text="{Binding DataCriacao}"/>
+                                            </TextBlock>
+                                        </ListViewItem>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="Adicionar">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="5"/>
+                                </Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="*Nome da lista:"/>
+                            <TextBox x:Name="nomeAdd"
+                                 Text="Digite o nome!"
+                                 Width="300"
+                                 MaxLength="25"
+                                 TextChanged="ValidarNome"/>
+                            <TextBlock Text="Adicione um comentario:"/>
+                            <TextBox x:Name="comentarioAdd"
+                                 Text="Digite o comentario!"
+                                 Width="300"
+                                 Height="100"
+                                 MaxLength="140"/>
+                            <TextBlock Text="Maximo de 140 caracteres."
+                                   FontStyle="Italic"/>
+                            <TextBlock Text="*Adicione uma categoria:"/>
+                            <ComboBox x:Name="enumCategoria" 
+                                  Width="300"
+                                  SelectedValuePath="Content"
+                                  Margin="5">
+                                <ComboBoxItem Tag="1" 
+                                          IsSelected="True" 
+                                          Content="Dispensa"/>
+                                <ComboBoxItem Tag="2" 
+                                          Content="Construcao"/>
+                                <ComboBoxItem Tag="3" 
+                                          Content="Escolar"/>
+                                <ComboBoxItem Tag="4" 
+                                          Content="Trabalho"/>
+                                <ComboBoxItem Tag="5" 
+                                          Content="Outros"/>
+                            </ComboBox>
+                            <Button Name="AdicionarValor"
+                                    Content="Concluir" 
+                                    Click="CriarArmazenamento" 
+                                    IsTapEnabled="False"
+                                    Width="300"
+                                Margin="5">
+                            </Button>
+                            <TextBlock Text="*Campos obrigatorios"
+                                   FontStyle="Italic"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="Remover">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="A remoçao e feita pelo clique na lista desejada sem confirmaçoes, tome cuidado!"
+                                       TextWrapping="Wrap"/>
+                            <ListView x:Name="RemoverList"  
+                                      SelectionMode="None"
+                                      IsItemClickEnabled="True"
+                                      ItemClick="RemoverArmazenamento">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListViewItem Width="500" 
+                                                  Height="100"
+                                                  Margin="5"
+                                                  Background="Red"
+                                                  IsHitTestVisible="False">
+                                            <TextBlock>
+                                            <Run Text="Nome:"/>
+                                            <Run Text="{Binding Nome}"/>
+                                            <LineBreak/>
+                                            <Run Text="Categoria:"/>
+                                            <Run Text="{Binding Categorias}"/>
+                                            <LineBreak/>
+                                            <Run Text="Data de criação:"/>
+                                            <Run Text="{Binding DataCriacao}"/>
+                                            </TextBlock>
+                                        </ListViewItem>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+            </Pivot.Items>
+        </Pivot>
+    </Grid>
+</Page>
+

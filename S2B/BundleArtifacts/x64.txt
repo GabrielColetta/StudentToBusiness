@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Gabriel\documents\visual studio 2015\Projects\StudentToBusiness\S2B\bin\x64\Debug\S2B_1.0.0.0_x64_Debug.appx
+SymbolPackage=C:\Users\Gabriel\Desktop\S2B_1.0.0.0_Debug_Test\S2B_1.0.0.0_x64_Debug.appxsym
